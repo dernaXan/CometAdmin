@@ -1,5 +1,5 @@
 from flask import request
-from flask import Flask, make_response
+from flask import Flask, make_response, render_template
 import secrets
 
 def set_cookie(cookie, lifetime=604800, secure=False):
@@ -21,4 +21,4 @@ def index():
   if get_cookie('session'):
     return 'Hallo'
   else:
-    
+    render_template("not_logged_in.html")
