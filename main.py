@@ -23,4 +23,4 @@ def index():
   else:
     return render_template("not_logged_in.html")
 
-app.run(port=int(os.getenv("PORT")))
+app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
