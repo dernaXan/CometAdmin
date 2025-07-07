@@ -1,6 +1,6 @@
 from flask import request
 from flask import Flask, make_response, render_template
-import secrets
+import secrets, os
 
 def set_cookie(cookie, lifetime=604800, secure=False):
   for key, value in cookies.items():
@@ -22,3 +22,5 @@ def index():
     return 'Hallo'
   else:
     render_template("not_logged_in.html")
+
+app.run(port=int(os.getenv("PORT")))
