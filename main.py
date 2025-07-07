@@ -1,5 +1,5 @@
 from flask import request
-from flask import Flask, make_response, render_template
+from flask import Flask, make_response, render_template, redirect
 import secrets, os
 #intern
 def set_cookie(cookie, lifetime=604800, secure=False):
@@ -27,7 +27,8 @@ app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
 @app.route('/login')
 def login():
-  pass
+  login_url = "https://discord.com/oauth2/authorize?client_id=1391110692223848571&response_type=code&redirect_uri=https%3A%2F%2Fcometadmin-73ya.onrender.com%2Flogin_callback&scope=guilds+identify"
+  return redirect(discord_login_url)
 
 @app.route('login-callback')
 def logincallback():
