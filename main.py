@@ -23,8 +23,6 @@ def index():
   else:
     return render_template("not_logged_in.html")
 
-app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-
 @app.route('/login')
 def login():
   login_url = "https://discord.com/oauth2/authorize?client_id=1391110692223848571&response_type=code&redirect_uri=https%3A%2F%2Fcometadmin-73ya.onrender.com%2Flogin_callback&scope=guilds+identify"
@@ -34,3 +32,6 @@ def login():
 def logincallback():
   code = request.args.get("code")
   return "."
+
+app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
