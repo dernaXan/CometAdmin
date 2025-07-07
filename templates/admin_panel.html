@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CometBot Admin Panel</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <h1>CometBot Admin Panel</h1>
+  <form method="POST" action="/admin/save">
+    <!-- Server-Auswahl -->
+    <section>
+      <label for="server">Wähle einen Server:</label>
+      <select name="server_id" id="server" required>
+        {% for guild in guilds %}
+          {% if guild.is_admin %}
+            <option value="{{ guild.id }}">{{ guild.name }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+      <button type="button" onclick="document.getElementById('config-sections').style.display = 'block';">Server bestätigen</button>
+    </section>
+
+    <div id="config-sections" style="display: none;">
+      <!-- Moderation -->
+      <section>
+        <h2>Moderation</h2>
+        <label for="mod_role">Mod-Rolle:</label>
+        <select name="mod_role" id="mod_role">
+          {% for role in roles %}
+            <option value="{{ role.id }}">{{ role.name }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="mod_channel">Mod-Textkanal:</label>
+        <select name="mod_channel" id="mod_channel">
+          {% for channel in channels %}
+            <option value="{{ channel.id }}">{{ channel.name }}</option>
+          {% endfor %}
+        </select>
+      </section>
+
+      <!-- Punktesystem -->
+      <section>
+        <h2>Punktesystem (nur aktiv mit Mod-Rolle + Mod-Channel)</h2>
+        <input type="checkbox" name="enable_points" id="enable_points">
+        <label for="enable_points">Punktesystem aktivieren</label>
+        {% for user in members %}
+          <div>
+            <label>{{ user.name }}:</label>
+            <input type="number" name="points_{{ user.id }}" value="{{ user.points }}" />
+          </div>
+        {% endfor %}
+        <label for="max_negative">Maximale Negativpunkte:</label>
+        <input type="number" name="max_negative" id="max_negative">
+        <select name="neg_action">
+          <option value="none">Keine Aktion</option>
+          <option value="kick">Kick</option>
+          <option value="ban">Ban</option>
+        </select>
+      </section>
+
+      <!-- AutoMod -->
+      <section>
+        <h2>AutoMod</h2>
+        <input type="checkbox" name="enable_automod" id="enable_automod">
+        <label for="enable_automod">Badword-Filter aktivieren</label>
+        <textarea name="badwords" placeholder="Wörter mit Komma trennen"></textarea>
+      </section>
+
+      <!-- Ingame Inhalte -->
+      <section>
+        <h2>Ingame Inhalte (Brawl Stars)</h2>
+        <input type="checkbox" name="enable_ingame" id="enable_ingame">
+        <label for="enable_ingame">Brawl Stars Features aktivieren</label>
+        <p>Hier erscheinen dann Clubinfos, Ranglisten usw.</p>
+      </section>
+
+      <!-- Server Pass -->
+      <section>
+        <h2>Server Pass</h2>
+        <input type="checkbox" name="enable_pass" id="enable_pass">
+        <label for="enable_pass">Server Pass aktivieren</label>
+        <div id="pass-rewards">
+          <p>Belohnungen (Text & Icon-URL):</p>
+          {% for i in range(1, 6) %}
+            <input type="text" name="reward_text_{{ i }}" placeholder="Belohnung {{ i }}">
+            <input type="url" name="reward_icon_{{ i }}" placeholder="Icon URL">
+            <br>
+          {% endfor %}
+        </div>
+        <label for="pass_reset">Reset-Zyklus:</label>
+        <select name="pass_reset">
+          <option value="none">Nie</option>
+          <option value="monthly">Monatlich</option>
+          <option value="yearly">Jährlich</option>
+        </select>
+      </section>
+
+      <!-- Shop -->
+      <section>
+        <h2>Shop (nur aktiv mit Mod-Rolle + Mod-Channel)</h2>
+        <input type="checkbox" name="enable_shop" id="enable_shop">
+        <label for="enable_shop">Shop aktivieren</label>
+        {% for i in range(1, 4) %}
+          <div>
+            <input type="text" name="shop_item_{{ i }}" placeholder="Item {{ i }}">
+            <input type="url" name="shop_icon_{{ i }}" placeholder="Icon URL">
+            <input type="number" name="shop_price_{{ i }}" placeholder="Preis in Punkten">
+            <input type="number" name="shop_discount_{{ i }}" placeholder="Rabatt %">
+          </div>
+        {% endfor %}
+      </section>
+
+      <button type="submit">Speichern</button>
+    </div>
+  </form>
+</body>
+</html>
