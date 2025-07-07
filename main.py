@@ -26,7 +26,7 @@ def index():
 @app.route('/login')
 def login():
   login_url = "https://discord.com/oauth2/authorize?client_id=1391110692223848571&response_type=code&redirect_uri=https%3A%2F%2Fcometadmin-73ya.onrender.com%2Flogin_callback&scope=guilds+identify"
-  return redirect(discord_login_url)
+  return redirect(login_url)
 
 @app.route('login-callback')
 def logincallback():
