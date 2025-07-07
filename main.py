@@ -1,6 +1,7 @@
 from flask import request
 from flask import Flask, make_response, render_template, redirect, session, url_for
 import secrets, os
+import requests
 
 #vars
 CLIENT_ID = os.environ.get("CLIENT_ID")
