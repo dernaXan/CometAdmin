@@ -51,18 +51,18 @@ def logincallback():
   }
   headers = {
     "Content-Type": "application/x-www-form-urlencoded"
+  }
+  r = requests.post(f"{API_BASE_URL}/oauth2/token", data=data, headers=headers)
+  r.raise_for_status()
+  token = r.json()["access_token"]
 
-r = requests.post(f"{API_BASE_URL}/oauth2/token", data=data, headers=headers)
-r.raise_for_status()
-token = r.json()["access_token"]
+  user_data = requests.get(
+    f"{API_BASE_URL}/users/@me",
+    headers={"Authorization": f"Bearer {token}"}
+  ).json()
 
-user_data = requests.get(
-  f"{API_BASE_URL}/users/@me",
-  headers={"Authorization": f"Bearer {token}"}
-).json()
-
-session["user"] = user_data
-return redirect(url_for("index"))
+  session["user"] = user_data
+  return redirect(url_for("index"))
 
 app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
