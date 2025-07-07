@@ -65,5 +65,10 @@ def logincallback():
   session["user"] = user_data
   return redirect(url_for("index"))
 
+@app.route("/logout")
+def logout():
+  session.clear()
+  return redirect(url_for("index"))
+
 app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
