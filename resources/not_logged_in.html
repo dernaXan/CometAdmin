@@ -1,1 +1,118 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CometBot Admin Panel</title>
+  <style>
+    /* Reset & Basics */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1f2937, #3b82f6);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 0.3em;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    p.description {
+      max-width: 600px;
+      font-size: 1.2rem;
+      margin-bottom: 2em;
+      line-height: 1.5;
+      color: #d1d5db;
+    }
+
+    a.invite-link {
+      display: inline-block;
+      margin-bottom: 2em;
+      font-weight: 600;
+      color: #93c5fd;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+    a.invite-link:hover {
+      border-color: #bfdbfe;
+      color: #bfdbfe;
+    }
+
+    button.login-btn {
+      background-color: #2563eb;
+      border: none;
+      padding: 18px 50px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(37, 99, 235, 0.6);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    button.login-btn:hover {
+      background-color: #1e40af;
+      box-shadow: 0 8px 16px rgba(30, 64, 175, 0.8);
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 15px 10px;
+      font-size: 0.9rem;
+      color: #9ca3af;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      p.description {
+        font-size: 1rem;
+      }
+      button.login-btn {
+        padding: 14px 30px;
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Willkommen beim CometBot Admin Panel</h1>
+  <p class="description">
+    Hier kannst du deinen CometBot verwalten und seine Einstellungen auf deinem Discord-Server anpassen.<br />
+    Um fortzufahren, logge dich bitte mit deinem Discord-Konto ein.
+  </p>
+
+  <a
+    href="https://discord.com/oauth2/authorize?client_id=DEINE_CLIENT_ID&scope=bot%20applications.commands&permissions=8"
+    target="_blank"
+    rel="noopener"
+    class="invite-link"
+  >
+    CometBot auf deinen Server einladen
+  </a>
+
+  <form action="/login" method="GET">
+    <button class="login-btn" type="submit">Mit Discord anmelden</button>
+  </form>
+
+  <footer>
+    &copy; 2025 CometBot – Alle Rechte vorbehalten
+  </footer>
+</body>
+</html>
 
