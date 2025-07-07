@@ -1,7 +1,7 @@
 from flask import request
 from flask import Flask, make_response, render_template
 import secrets, os
-
+#intern
 def set_cookie(cookie, lifetime=604800, secure=False):
   for key, value in cookies.items():
     try:
