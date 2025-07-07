@@ -21,6 +21,6 @@ def index():
   if get_cookie('session'):
     return 'Hallo'
   else:
-    render_template("not_logged_in.html")
+    return render_template("not_logged_in.html")
 
 app.run(port=int(os.getenv("PORT")))
