@@ -32,7 +32,7 @@ def index():
   user = session.get("user", None)
   if not user:
     return render_template("not_logged_in.html")
-  return 'Hallo'
+  return render_template("admin_panel.html")
 
 @app.route('/login')
 def login():
