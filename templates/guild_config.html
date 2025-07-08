@@ -6,6 +6,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>CometBot Admin Panel</title>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css">
     <style>
       .section {
         background: transparent;
@@ -68,19 +70,35 @@
           {% endfor %}
         </select>
 
-        <button type="submit" style="
-          background-color: #4f46e5;
-          color: white;
-          border: none;
-          padding: 12px 24px;
-          border-radius: 8px;
-          cursor: pointer;
-          font-size: 16px;
-          margin-top: 16px;
-          transition: background-color 0.3s ease;
-        ">Speichern</button>
+        <label for="badwords">Badwords Filter:</label>
+        <input id="badwords" name="badwords" placeholder="Wörter eintippen und mit Komma trennen">
+      </div>
+      <div class="section">
+        <h3>Punktesystem</h3>
+        <label for="maxminuspoints">Maximale Minus-Punkte</label>
+        <input type="number" name="maxminuspoints" id="maxminuspoints" max="-1" step="1" />
+        <label for="minuspointsaction">Strafe:</label>
+        <select id="minuspointsaction" name="minuspointsaction">
+          <option value="0" selected>Nichts</option>
+          <option value="1" selected>Kick</option>
+          <option value="2" selected>Bann</option>
+        </select>
       </div>
     </form>
+    <script>
+      var badwords = document.querySelector('#badwords');
+      var tagify = new Tagify(input, {
+        delimeters: ", ",
+        maxTags: 100,
+        whitelist: [],
+        dropdown: {
+          enabled: 0
+        }
+      });
+
+      input.addEventListener('change', function(){
+        console.log('Badwords:', input.value);
+    </script>
   </body>
 </html>
 {% endblock %}
