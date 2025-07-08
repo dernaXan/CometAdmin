@@ -32,7 +32,7 @@ def get_guild_roles(guild_id):
   r = requests.get(f"https://dcbot-cr1m.onrender.com/guild/{guild_id}/roles")
   return r.json()
 
-def get_guild_channels(guild:id):
+def get_guild_channels(guild_id):
   r = requests.get(f"https://dcbot-cr1m.onrender.com/guild/{guild_id}/channels")
   return r.json()
 
