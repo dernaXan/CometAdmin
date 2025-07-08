@@ -2,7 +2,37 @@
 {% block content %}
 <!DOCTYPE html>
 <html>
-  <head><title>Server auswählen</title></head>
+  <head><title>Server auswählen</title>
+    <style>
+        .server-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.server-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px 30px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.server-card a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.server-card:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+</style>
+</head>
   <body>
     <ul>
       {% for guild in guilds %}
