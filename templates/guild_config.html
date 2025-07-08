@@ -87,7 +87,7 @@
     </form>
     <script>
       var badwords = document.querySelector('#badwords');
-      var tagify = new Tagify(input, {
+      var tagify = new Tagify(badwords, {
         delimeters: ", ",
         maxTags: 100,
         whitelist: [],
@@ -96,7 +96,7 @@
         }
       });
 
-      input.addEventListener('change', function(){
+      badwords.addEventListener('change', function(){
         console.log('Badwords:', input.value);
       });
     </script>
