@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+  <head><title>Server auswählen</title></head>
+  <body>
+    <ul>
+      {% for guild in guilds %}
+        <li><a href="{{ url_for('config_guild', guild_id=guild.id) }}">{{ guild.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
