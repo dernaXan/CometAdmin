@@ -24,6 +24,18 @@ def get_cookie(key):
   data = request.cookies.get(key)
   return data
 
+def get_user_admin_guilds(user_id):
+  r = requests.get(f"https://dcbot-cr1m.onrender.com/user/{user_id}/admin_guilds")
+  return r.json()
+
+def get_guild_roles(guild_id):
+  r = requests.get(f"https://dcbot-cr1m.onrender.com/guild/{guild_id}/roles")
+  return r.json()
+
+def get_guild_channels(guild:id):
+  r = requests.get("https://dcbot-cr1m.onrender.com/guild/{guild_id}/channels")
+  return r.json()
+
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
@@ -32,7 +44,30 @@ def index():
   user = session.get("user", None)
   if not user:
     return render_template("not_logged_in.html")
-  return render_template("admin_panel.html")
+  guilds = get_user_admin_guilds(user_id = session.get("user", {}).get("id"))
+  return render_template("server_select.html", guilds=guilds)
+
+@app.route('/config/<guild_id>', methods=["GET", "POST"])
+def config_guild(guild_id):
+    user = session.get("user", None)
+    if not user:
+        return redirect(url_for("index"))
+
+    guilds = get_user_admin_guilds(user_id=user.get("id"))
+    # Prüfen, ob user admin in guild_id ist (optional)
+    if not any(str(g['id']) == guild_id for g in guilds):
+        return "Keine Berechtigung für diesen Server", 403
+
+    roles = get_guild_roles(guild_id)
+    channels = get_guild_channels(guild_id)
+
+    if request.method == "POST":
+        # Hier kannst du deine Formularverarbeitung machen
+        # z.B. request.form['mod_role'], request.form['mod_channel'], etc.
+        # Daten speichern und danach evtl. zurück zur Auswahl oder Bestätigung
+        return redirect(url_for("config_guild", guild_id=guild_id))
+
+    return render_template("guild_config.html", guild_id=guild_id, roles=roles, channels=channels)
 
 @app.route('/login')
 def login():
