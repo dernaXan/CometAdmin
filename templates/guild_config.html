@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -25,21 +24,63 @@
         padding-left: 30px;
         transform: scale(1.02);
       }
+      select {
+        width: 100%;
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: 2px solid #4f46e5;
+        font-size: 16px;
+        margin: 8px 0 16px 0;
+        cursor: pointer;
+        transition: border-color 0.3s ease;
+        box-sizing: border-box;
+      }
+      select:focus {
+        outline: none;
+        border-color: #312e81;
+        box-shadow: 0 0 5px #4f46e5;
+      }
+      label {
+        display: block;
+        font-weight: 600;
+        margin-top: 12px;
+      }
     </style>
   </head>
   <body>
     <h1>Einstellungen für Server {{ guild_id }}</h1>
-    <div class="section">
-      <h3>Moderation</h3>
-      <label for="moddropdown">Modrolle:</label>
-      <select id="modrole" name="dropdown">
-        <option value="" disabled selected>Bitte auswählen</option>
-        {% for role in roles %}
-          <option value="{{ role.id }}">{{ role.name }}</option>
-        {% endfor %}
-      </select>
-    </div>
+    <form method="POST" action="/config/{{ guild_id }}">
+      <div class="section">
+        <h3>Moderation</h3>
+        <label for="modrole">Modrolle:</label>
+        <select id="modrole" name="modrole" required>
+          <option value="" disabled selected>Bitte auswählen</option>
+          {% for role in roles %}
+            <option value="{{ role.id }}">{{ role.name }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="modchat">Modchat:</label>
+        <select id="modchat" name="modchat" required>
+          <option value="" disabled selected>Bitte auswählen</option>
+          {% for channel in channels %}
+            <option value="{{ channel.id }}">{{ channel.name }}</option>
+          {% endfor %}
+        </select>
+
+        <button type="submit" style="
+          background-color: #4f46e5;
+          color: white;
+          border: none;
+          padding: 12px 24px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 16px;
+          margin-top: 16px;
+          transition: background-color 0.3s ease;
+        ">Speichern</button>
+      </div>
+    </form>
   </body>
 </html>
-
 {% endblock %}
