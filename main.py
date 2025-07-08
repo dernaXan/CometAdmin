@@ -33,7 +33,8 @@ def get_guild_roles(guild_id):
   return r.json()
 
 def get_guild_channels(guild:id):
-  r = requests.get("https://dcbot-cr1m.onrender.com/guild/{guild_id}/channels")
+  r = requests.get(f"https://dcbot-cr1m.onrender.com/guild/{guild_id}/channels")
+  print(
   return r.json()
 
 app = Flask(__name__)
