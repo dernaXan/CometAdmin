@@ -49,17 +49,22 @@
   </form>
 
   <script>
-    const badwords = document.querySelector('#badwords');
-    const tagify = new Tagify(badwords, {
-      delimiters: ", ",
-      maxTags: 100,
-      pattern: /[^,]+/,
-      whitelist: [],
-      dropdown: { enabled: 0 }
-    });
+    document.addEventListener("DOMContentLoaded", function () {
+      const textarea = document.getElementById('badwords');
 
-    badwords.addEventListener('change', function () {
-      console.log('Badwords:', badwords.value);
+      // Initialisiere Tagify auf der Textarea
+      const tagify = new Tagify(textarea, {
+        delimiters: ",",                // Tags bei Komma
+        pattern: /[^,]+/,               // Alles außer Komma erlaubt
+        dropdown: { enabled: 0 },       // Kein Dropdown
+        enforceWhitelist: false,        // Keine Einschränkung
+        maxTags: 100                    // Max. 100 Tags
+      });
+
+      // Optional: bei Änderung loggen
+      textarea.addEventListener('change', () => {
+        console.log("Werte:", textarea.value);
+      });
     });
   </script>
 {% endblock %}
