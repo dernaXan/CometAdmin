@@ -30,7 +30,7 @@
       </select>
 
       <label for="badwords">Badwords Filter:</label>
-      <input id="badwords" name="badwords" placeholder="Wörter eintippen und mit Komma trennen">
+      <textarea id="badwords" name="badwords" placeholder="Wörter eintippen und mit Komma trennen"></textarea>
     </div>
 
     <div class="section">
@@ -53,6 +53,7 @@
     const tagify = new Tagify(badwords, {
       delimiters: ", ",
       maxTags: 100,
+      pattern: /[^,]+/,
       whitelist: [],
       dropdown: { enabled: 0 }
     });
