@@ -46,6 +46,22 @@
         <option value="2">Bann</option>
       </select>
     </div>
+
+    <div class="section">
+      <h3>Shop</h3>
+
+      <label for="itemSelect">Shopangebote verwalten</label>
+      <select id="itemSelect">
+        <option value="" disabled selected>Item auswählen</option>
+        {% for item in shop_items %}
+          <option value="{{ loop.index0 }}">{{ item.name }}</option>
+        {% endfor %}
+      </select>
+
+      <div id="itemContainer"></div>
+
+      <button type="button" id="addItemBtn">Neues Item</button>
+    </div>
   </form>
 
   <script>
@@ -67,5 +83,55 @@
         console.log("Werte:", textarea.value);
       });
     });
+
+    const shopItems = {{ shop_items | tojson }};
+    let itemIndex = shopItems.length;
+
+    const itemSelect = document.getElementById('itemSelect');
+    const itemContainer = document.getElementById('itemContainer');
+    const addItemBtn = document.getElementById('addItemBtn');
+
+    function renderItem(item, index) {
+      const div = document.createItem('div');
+      div.classList.add('shop-item');
+      div.dataset.itemIndex = index;
+
+      div.innerHTML = `
+        <hr>
+        <strong>Item: ${item.name || 'Neues Item'}</strong>
+        <input type="hidden" name="{items}[id]" value="${item.id || ''}">
+        <label>Name:</label>
+        <input type="text" name="items[${index}][name]" value="${item.name || ''}">
+        <label>Preis:</label>
+        <input type="number" name="items[${index}][price]" value="${item.price || 0}">
+        <label>Stock:</label>
+        <input type="number" name="items[${index}][stock]" value="${item.stock || 0}">
+        <button type="button" onclick="removeItem(this)">Löschen</button>
+      `;
+      itemContainer.appendChild(div);
+    }
+
+    shopItems.forEach((item, i) => renderItem(item, i));
+
+    itemSelect.addEventListener('change' function () {
+      const selectedIndex = this.value;
+      const itemDiv = [...itemContainer.children].find(child 0> {
+        return child.dataset.itemIndex === selectedIndex;
+    });
+
+    if(itemDiv) {
+      itemDiv.scrollIntoView({ behavior: 'smooth' });
+      itemDiv.style.border = '2px solid limegreen';
+    }
+    });
+
+    addItemBtn.addEventListener('click', () => {
+      renderItem({}, itemIndex);
+      itemIndex++;
+    });
+
+    function removeItem(button) {
+      const itemDiv = button.closest('.shop-item');
+      if (itemDiv) itemDiv.remove();
   </script>
 {% endblock %}
