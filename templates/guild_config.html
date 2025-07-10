@@ -65,23 +65,20 @@
   </form>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      alert("Test");
-      const textarea = document.getElementById('badwords');
+  document.addEventListener("DOMContentLoaded", function () {
+    const textarea = document.getElementById('badwords');
 
-      // Initialisiere Tagify auf der Textarea
-      const tagify = new Tagify(textarea, {
-        delimiters: ",",                // Tags bei Komma
-        pattern: /[^,]+/,               // Alles außer Komma erlaubt
-        dropdown: { enabled: 0 },       // Kein Dropdown
-        enforceWhitelist: false,        // Keine Einschränkung
-        maxTags: 100                    // Max. 100 Tags
-      });
+    // Initialisiere Tagify
+    const tagify = new Tagify(textarea, {
+      delimiters: ",",
+      pattern: /[^,]+/,
+      dropdown: { enabled: 0 },
+      enforceWhitelist: false,
+      maxTags: 100
+    });
 
-      // Optional: bei Änderung loggen
-      textarea.addEventListener('change', () => {
-        console.log("Werte:", textarea.value);
-      });
+    textarea.addEventListener('change', () => {
+      console.log("Werte:", textarea.value);
     });
 
     const shopItems = {{ shop_items | tojson }};
@@ -92,14 +89,14 @@
     const addItemBtn = document.getElementById('addItemBtn');
 
     function renderItem(item, index) {
-      const div = document.createItem('div');
+      const div = document.createElement('div');
       div.classList.add('shop-item');
       div.dataset.itemIndex = index;
 
       div.innerHTML = `
         <hr>
         <strong>Item: ${item.name || 'Neues Item'}</strong>
-        <input type="hidden" name="{items}[id]" value="${item.id || ''}">
+        <input type="hidden" name="items[${index}][id]" value="${item.id || ''}">
         <label>Name:</label>
         <input type="text" name="items[${index}][name]" value="${item.name || ''}">
         <label>Preis:</label>
@@ -111,27 +108,34 @@
       itemContainer.appendChild(div);
     }
 
+    // Vorhandene Items rendern
     shopItems.forEach((item, i) => renderItem(item, i));
 
-    itemSelect.addEventListener('change' function () {
+    // Auswahl im Dropdown scrollt zum Item
+    itemSelect.addEventListener('change', function () {
       const selectedIndex = this.value;
-      const itemDiv = [...itemContainer.children].find(child 0> {
+      const itemDiv = [...itemContainer.children].find(child => {
         return child.dataset.itemIndex === selectedIndex;
+      });
+
+      if (itemDiv) {
+        itemDiv.scrollIntoView({ behavior: 'smooth' });
+        itemDiv.style.border = '2px solid limegreen';
+        setTimeout(() => itemDiv.style.border = '', 1500);
+      }
     });
 
-    if(itemDiv) {
-      itemDiv.scrollIntoView({ behavior: 'smooth' });
-      itemDiv.style.border = '2px solid limegreen';
-    }
-    });
-
+    // Neues Item hinzufügen
     addItemBtn.addEventListener('click', () => {
       renderItem({}, itemIndex);
       itemIndex++;
     });
 
-    function removeItem(button) {
+    // Item entfernen
+    window.removeItem = function (button) {
       const itemDiv = button.closest('.shop-item');
       if (itemDiv) itemDiv.remove();
-  </script>
+    };
+  });
+</script>
 {% endblock %}
