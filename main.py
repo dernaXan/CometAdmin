@@ -60,6 +60,39 @@ def config_guild(guild_id):
 
     roles = get_guild_roles(guild_id)
     channels = get_guild_channels(guild_id)
+    shop_items = [
+    {
+        "id": "item1",
+        "name": "Legendärer Pin",
+        "price": 500,
+        "stock": 3
+    },
+    {
+        "id": "item2",
+        "name": "Username-Farbe ändern",
+        "price": 200,
+        "stock": -1  # unbegrenzt
+    },
+    {
+        "id": "item3",
+        "name": "Rolle: VIP",
+        "price": 1000,
+        "stock": 10
+    },
+    {
+        "id": "item4",
+        "name": "Einmaliger Shoutout",
+        "price": 250,
+        "stock": 1
+    },
+    {
+        "id": "item5",
+        "name": "Exklusiver Emoji",
+        "price": 150,
+        "stock": -1
+    }
+]
+
 
     if request.method == "POST":
         # Hier kannst du deine Formularverarbeitung machen
@@ -67,7 +100,7 @@ def config_guild(guild_id):
         # Daten speichern und danach evtl. zurück zur Auswahl oder Bestätigung
         return redirect(url_for("config_guild", guild_id=guild_id))
 
-    return render_template("guild_config.html", guild_id=guild_id, roles=roles, channels=channels)
+    return render_template("guild_config.html", guild_id=guild_id, roles=roles, channels=channels, shop_items=shop_items)
 
 @app.route('/login')
 def login():
