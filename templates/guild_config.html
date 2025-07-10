@@ -125,6 +125,7 @@
         <label>Stock (-1 = unbegrenzt):</label>
         <input type="number" value="${item.stock || -1}" onchange="updateItem(${index}, 'stock', parseInt(this.value))">
         <br><button type="button" onclick="deleteItem(${index})">Löschen</button>
+        <br><br>
       `;
       itemContainer.appendChild(div);
     }
