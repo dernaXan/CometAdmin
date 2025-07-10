@@ -53,18 +53,19 @@
       <label for="itemSelect">Shopangebote verwalten</label>
       <select id="itemSelect">
         <option value="" disabled selected>Item auswählen</option>
-        {% for item in shop_items %}
-          <option value="{{ loop.index0 }}">{{ item.name }}</option>
-        {% endfor %}
       </select>
 
       <div id="itemContainer"></div>
 
       <button type="button" id="addItemBtn">Neues Item</button>
+      <input type="hidden" name="shop_data" id="shop_data">
     </div>
   </form>
 
   <script>
+  // =====================
+  // TAGIFY BADWORDS-INPUT
+  // =====================
   document.addEventListener("DOMContentLoaded", function () {
     const textarea = document.getElementById('badwords');
 
@@ -80,62 +81,90 @@
     textarea.addEventListener('change', () => {
       console.log("Werte:", textarea.value);
     });
+  });
 
-    const shopItems = {{ shop_items | tojson }};
-    let itemIndex = shopItems.length;
 
+  // ================================
+  // SHOP ITEM EDITOR SYSTEM (DROPDOWN)
+  // ================================
+  document.addEventListener('DOMContentLoaded', () => {
     const itemSelect = document.getElementById('itemSelect');
     const itemContainer = document.getElementById('itemContainer');
     const addItemBtn = document.getElementById('addItemBtn');
+    const shopDataInput = document.getElementById('shop_data');
 
-    function renderItem(item, index) {
+    let shopItems = {{ shop_items | tojson }};
+    let itemIndex = shopItems.length;
+
+    function updateSelectOptions() {
+      // Entferne alle außer dem ersten Dummy-Option-Eintrag
+      [...itemSelect.options].slice(1).forEach(opt => opt.remove());
+
+      shopItems.forEach((item, i) => {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = item.name || `Item ${i + 1}`;
+        itemSelect.appendChild(opt);
+      });
+    }
+
+    function renderItemEditor(index) {
+      itemContainer.innerHTML = ''; // Nur 1 Editor sichtbar
+      const item = shopItems[index];
+
       const div = document.createElement('div');
       div.classList.add('shop-item');
-      div.dataset.itemIndex = index;
 
       div.innerHTML = `
         <hr>
-        <strong>Item: ${item.name || 'Neues Item'}</strong>
-        <input type="hidden" name="items[${index}][id]" value="${item.id || ''}">
+        <strong>Item: ${item.name || 'Neues Item'}</strong><br>
         <label>Name:</label>
-        <input type="text" name="items[${index}][name]" value="${item.name || ''}">
+        <input type="text" value="${item.name || ''}" onchange="updateItem(${index}, 'name', this.value)">
         <label>Preis:</label>
-        <input type="number" name="items[${index}][price]" value="${item.price || 0}">
-        <label>Stock:</label>
-        <input type="number" name="items[${index}][stock]" value="${item.stock !== undefined ? item.stock : -1}">
-        <button type="button" onclick="removeItem(this)">Löschen</button>
+        <input type="number" value="${item.price || 0}" onchange="updateItem(${index}, 'price', parseInt(this.value))">
+        <label>Stock (-1 = unbegrenzt):</label>
+        <input type="number" value="${item.stock || -1}" onchange="updateItem(${index}, 'stock', parseInt(this.value))">
+        <br><button type="button" onclick="deleteItem(${index})">Löschen</button>
       `;
       itemContainer.appendChild(div);
     }
 
-    // Vorhandene Items rendern
-    shopItems.forEach((item, i) => renderItem(item, i));
+    window.updateItem = function (index, key, value) {
+      shopItems[index][key] = value;
+      updateSelectOptions(); // aktualisiert Dropdown-Label bei Namensänderung
+      serializeShopData();
+    }
 
-    // Auswahl im Dropdown scrollt zum Item
-    itemSelect.addEventListener('change', function () {
-      const selectedIndex = this.value;
-      const itemDiv = [...itemContainer.children].find(child => {
-        return child.dataset.itemIndex === selectedIndex;
-      });
+    window.deleteItem = function (index) {
+      shopItems.splice(index, 1);
+      itemSelect.value = '';
+      itemContainer.innerHTML = '';
+      updateSelectOptions();
+      serializeShopData();
+    }
 
-      if (itemDiv) {
-        itemDiv.scrollIntoView({ behavior: 'smooth' });
-        itemDiv.style.border = '2px solid limegreen';
-        setTimeout(() => itemDiv.style.border = '', 1500);
-      }
-    });
-
-    // Neues Item hinzufügen
     addItemBtn.addEventListener('click', () => {
-      renderItem({}, itemIndex);
-      itemIndex++;
+      const newItem = { id: `item${Date.now()}`, name: '', price: 0, stock: -1 };
+      shopItems.push(newItem);
+      itemIndex = shopItems.length;
+      updateSelectOptions();
+      itemSelect.value = shopItems.length - 1;
+      renderItemEditor(shopItems.length - 1);
+      serializeShopData();
     });
 
-    // Item entfernen
-    window.removeItem = function (button) {
-      const itemDiv = button.closest('.shop-item');
-      if (itemDiv) itemDiv.remove();
-    };
+    itemSelect.addEventListener('change', function () {
+      const index = parseInt(this.value);
+      renderItemEditor(index);
+    });
+
+    function serializeShopData() {
+      shopDataInput.value = JSON.stringify(shopItems);
+    }
+
+    updateSelectOptions();
+    serializeShopData();
   });
 </script>
+
 {% endblock %}
