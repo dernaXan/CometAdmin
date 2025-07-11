@@ -60,6 +60,8 @@
       <button type="button" id="addItemBtn">Neues Item</button>
       <input type="hidden" name="shop_data" id="shop_data">
     </div>
+    <br><br>
+    <button type="submit" id="saveChanges">Speichern</button>
   </form>
 
   <script>
@@ -93,7 +95,8 @@
     const addItemBtn = document.getElementById('addItemBtn');
     const shopDataInput = document.getElementById('shop_data');
 
-    let shopItems = {{ shop_items | tojson }};
+    let data = {{ data | tojson }};
+    let shopItems = data?.shop_items ?? [];
     let itemIndex = shopItems.length;
 
     function updateSelectOptions() {
