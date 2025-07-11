@@ -60,7 +60,7 @@ def config_guild(guild_id):
 
     roles = get_guild_roles(guild_id)
     channels = get_guild_channels(guild_id)
-    r = requests.get(f'https://dcbot-cr1m.onrender.com/{guild_id}/data/load', headers={"Authorization": f"Bearer {os.environ.get('API_TOKEN', '')}"})
+    r = requests.get(f'https://dcbot-cr1m.onrender.com/guild/{guild_id}/data/load', headers={"Authorization": f"Bearer {os.environ.get('API_TOKEN', '')}"})
     data = {}
     if r.status_code != 200:
         data = r.json()
