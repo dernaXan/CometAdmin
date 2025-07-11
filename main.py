@@ -60,16 +60,15 @@ def config_guild(guild_id):
 
     roles = get_guild_roles(guild_id)
     channels = get_guild_channels(guild_id)
-    r = requests.get(f'https://dcbot-cr1m.onrender.com/{guild_id}/data/load')
+    r = requests.get(f'https://dcbot-cr1m.onrender.com/{guild_id}/data/load', headers={"Authorization": f"Bearer {os.environ.get('API_TOKEN', '')}")
     data = {}
     if r.status_code != 200:
         data = r.json()
 
     if request.method == "POST":
-        # Hier kannst du deine Formularverarbeitung machen
-        # z.B. request.form['mod_role'], request.form['mod_channel'], etc.
-        # Daten speichern und danach evtl. zurück zur Auswahl oder Bestätigung
-        return redirect(url_for("config_guild", guild_id=guild_id))
+        data = request.form.to_dict()
+        print(data, flush=True)
+        return redirect(url_for("index"))
 
     return render_template("guild_config.html", guild_id=guild_id, roles=roles, channels=channels, data=data)
 
