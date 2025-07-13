@@ -111,7 +111,15 @@
     const shopDataInput = document.getElementById('shop_data');
 
     let data = {{ data | tojson }};
-    let shopItems = data?.shop_data ?? [];
+    let shopItems = [];
+
+    try {
+      shopItems = JSON.parse(data.shop_data || '[]');
+    } catch(e) {
+      console.error('Fehler beim Parsen von shop_data:', e);
+      shopItems = [];
+    }
+
     let itemIndex = shopItems.length;
 
     function updateSelectOptions() {
