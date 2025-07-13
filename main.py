@@ -64,6 +64,7 @@ def config_guild(guild_id):
     data = {}
     if r.status_code == 200:
         data = r.json()
+    print(data, flush=True)
 
     if request.method == "POST":
         data = request.form.to_dict()
