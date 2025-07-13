@@ -96,7 +96,7 @@
     const shopDataInput = document.getElementById('shop_data');
 
     let data = {{ data | tojson }};
-    let shopItems = data?.shop_items ?? [];
+    let shopItems = data?.shop_data ?? [];
     let itemIndex = shopItems.length;
 
     function updateSelectOptions() {
@@ -170,7 +170,8 @@
     serializeShopData();
   });
 document.addEventListener('DOMContentLoaded', () => {
-  const badwordsData = {{ data.badwords | default('[]') | safe }};
+  const badwordsJson = {{ data.badwords | default('[]') | tojson }};
+  const badwordsData = JSON.parse(badwordsJson);
   const values = badwordsData.map(b => b.value).join(', ');
   document.getElementById("badwords").value = values;
 });
