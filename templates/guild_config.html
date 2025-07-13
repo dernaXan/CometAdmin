@@ -16,7 +16,7 @@
       <label for="modrole">Modrolle:</label>
       <select id="modrole" name="modrole" required>
         {% for role in roles %}
-          <option value="{{ role.id }}" {% if data.get('modrole', '0') == role.id %}selected{% endif %}>{{ role.name }}</option>
+          <option value="{{ role.id }}" {% if data.get('modrole', '0') == role.id|string %}selected{% endif %}>{{ role.name }}</option>
         {% endfor %}
         <option value="" disabled selected>Bitte auswählen</option>
       </select>
@@ -24,7 +24,7 @@
       <label for="modchat">Modchat:</label>
       <select id="modchat" name="modchat" required>
         {% for channel in channels %}
-          <option value="{{ channel.id }}" {% if data.get('modchat', '0') == channel.id %}selected{% endif %}>{{ channel.name }}</option>
+          <option value="{{ channel.id }}" {% if data.get('modchat', '0') == channel.id|string %}selected{% endif %}>{{ channel.name }}</option>
         {% endfor %}
         <option value="" disabled selected>Bitte auswählen</option>
       </select>
