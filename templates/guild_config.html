@@ -170,7 +170,7 @@
     serializeShopData();
   });
 document.addEventListener('DOMContentLoaded', () => {
-  const badwordsData = {{ data.get('badwords', '') | safe }};
+  const badwordsData = {{ data.badwords | default('[]') | safe }};
   const values = badwordsData.map(b => b.value).join(', ');
   document.getElementById("badwords").value = values;
 });
