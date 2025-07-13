@@ -15,18 +15,18 @@
 
       <label for="modrole">Modrolle:</label>
       <select id="modrole" name="modrole" required>
-        <option value="" disabled selected>Bitte auswählen</option>
         {% for role in roles %}
-          <option value="{{ role.id }}">{{ role.name }}</option>
+          <option value="{{ role.id }}" {% if data.get('modrole', '0') == role.id %}selected{% endif %}>{{ role.name }}</option>
         {% endfor %}
+        <option value="" disabled selected>Bitte auswählen</option>
       </select>
 
       <label for="modchat">Modchat:</label>
       <select id="modchat" name="modchat" required>
-        <option value="" disabled selected>Bitte auswählen</option>
         {% for channel in channels %}
-          <option value="{{ channel.id }}">{{ channel.name }}</option>
+          <option value="{{ channel.id }}" {% if data.get('modchat', '0') == channel.id %}selected{% endif %}>{{ channel.name }}</option>
         {% endfor %}
+        <option value="" disabled selected>Bitte auswählen</option>
       </select>
 
       <label for="badwords">Badwords Filter:</label>
@@ -37,13 +37,13 @@
       <h3>Punktesystem</h3>
 
       <label for="maxminuspoints">Maximale Minus-Punkte</label>
-      <input type="number" name="maxminuspoints" id="maxminuspoints" max="-1" step="1" />
+      <input type="number" name="maxminuspoints" id="maxminuspoints" max="-1" step="1" value="{{ data.maxminuspoints }}"/>
 
       <label for="minuspointsaction">Strafe:</label>
       <select id="minuspointsaction" name="minuspointsaction">
-        <option value="0">Nichts</option>
-        <option value="1">Kick</option>
-        <option value="2">Bann</option>
+        <option value="0" {% if data.get('minuspointsaction', '0') == '0' %}selected{% endif %}>Nichts</option>
+        <option value="1" {% if data.get('minuspointsaction', '0') == '1' %}selected{% endif %}>Kick</option>
+        <option value="2" {% if data.get('minuspointsaction', '0') == '2' %}selected{% endif %}>Bann</option>
       </select>
     </div>
 
@@ -169,6 +169,11 @@
     updateSelectOptions();
     serializeShopData();
   });
+document.addEventListener('DOMContentLoaded', () => {
+  const badwordsData = {{ data.badwords | safe }};
+  const values = badwordsData.map(b => b.value).join(', ');
+  document.getElementById("badwords").value = values;
+});
 </script>
 
 {% endblock %}
