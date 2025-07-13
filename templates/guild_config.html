@@ -18,7 +18,7 @@
         {% for role in roles %}
           <option value="{{ role.id }}" {% if data.get('modrole', '0') == role.id|string %}selected{% endif %}>{{ role.name }}</option>
         {% endfor %}
-        <option value="" disabled selected>Bitte auswählen</option>
+        <option value="" disabled {% if not data.get('modrole', '') %} selected {% endif %}>Bitte auswählen</option>
       </select>
 
       <label for="modchat">Modchat:</label>
@@ -26,7 +26,7 @@
         {% for channel in channels %}
           <option value="{{ channel.id }}" {% if data.get('modchat', '0') == channel.id|string %}selected{% endif %}>{{ channel.name }}</option>
         {% endfor %}
-        <option value="" disabled selected>Bitte auswählen</option>
+        <option value="" disabled {% if not data.get('modrole', '') %} selected {% endif %}>Bitte auswählen</option>
       </select>
 
       <label for="badwords">Badwords Filter:</label>
