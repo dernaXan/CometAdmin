@@ -70,6 +70,7 @@ def config_guild(guild_id):
         print(data, flush=True)
         r = requests.post(f'https://dcbot-cr1m.onrender.com/guild/{guild_id}/data/update', headers={"Authorization": f"Bearer {os.environ.get('API_TOKEN', '')}", "Content-Type": "application/json"}, json=data)
         if r.status_code == 200:
+          print("Chenges saved!", flush=True)
           return redirect(url_for("index"))
         else:
           return render_template("guild_config.html", guild_id=guild_id, roles=roles, channels=channels, data=data)
