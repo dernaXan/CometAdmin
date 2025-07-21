@@ -63,17 +63,9 @@
     <div class="section">
       <h3>Upload-Benachrichtigungen</h3>
 
-      <label for="yt_notify">Youtube Channel</label>
-      <p>(@MaxMustermann)</p>
+      <label for="yt_notify">Youtube ChannelID</label>
+      <p>(UC....)</p>
       <input type="text" name="upload_notify_yt" id="yt_notify" value="{{ data.get('upload-notifications', {}).get('yt', '') }}">
-
-      <label for="tt_notify">Tiktok Channel</label>
-      <p>(@MaxMustermann)</p>
-      <input type="text" name="upload_notify_tt" id="tt_notify" value="{{ data.get('upload-notifications', {}).get('tiktok', '') }}">
-
-      <label for="twitch_notify">Tiktok Channel</label>
-      <p>(MaxMustermann)</p>
-      <input type="text" name="upload_notify_twitch" id="twitch_notify" value="{{ data.get('upload-notifications', {}).get('twitch', '') }}">
     </div>
     <br><br>
     <button type="submit" id="saveChanges">Speichern</button>
