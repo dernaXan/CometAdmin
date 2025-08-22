@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Wähle einen Server aus</h1>
+  <ul class="server-list">
+    {% for t in turnaments %}
+      <li class="server-card">
+        <a href="{{ url_for('edit_turnament', turnament_id=t.id) }}">{{ t.name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+<form action="{{ url_for('new_turnament') }}" method="GET">
+  <button type="submit">Mit Discord anmelden</button>
+</form>
+{% endblock %}
