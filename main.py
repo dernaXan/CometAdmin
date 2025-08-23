@@ -153,6 +153,39 @@ def edit_tournament(tournament_id):
             return "Fehler beim Speichern der Turnierdaten", 500
         return redirect(url_for("index"))
 
+@app.route('/tournaments/<string:tournament_id>/delete', methods=['POST', 'DELETE'])
+def delete_tournament_route(tournament_id):
+    user = session.get("user", None)
+    if not user:
+        return redirect(url_for("index"))
+
+    # Turnierdaten abrufen, um guild_id zu prüfen
+    r = requests.get(
+        f'https://dcbot-cr1m.onrender.com/tournaments/{tournament_id}/load',
+        headers={"Authorization": f"Bearer {API_TOKEN}"}
+    )
+    if r.status_code != 200:
+        return "Fehler beim Abrufen der Turnierdaten", 500
+    tournament = r.json()
+    guild_id = tournament['guild_id']
+
+    # Berechtigungscheck
+    guilds = get_user_admin_guilds(user_id=user.get("id"))
+    if not any(str(g['id']) == str(guild_id) for g in guilds):
+        return "Keine Berechtigung für diesen Server", 403
+
+    # Turnier löschen mit Auth-Header
+    r = requests.get(
+        f'https://dcbot-cr1m.onrender.com/tournaments/{tournament_id}/delete',
+        headers={"Authorization": f"Bearer {API_TOKEN}"}
+    )
+    if r.status_code != 200:
+        return "Fehler beim Löschen des Turniers", 500
+
+    # Weiterleitung nach Löschung
+    return redirect(url_for('tournaments', guild_id=guild_id))
+
+
 @app.route('/login')
 def login():
     login_url = f"https://discord.com/oauth2/authorize?client_id={CLIENT_ID}&response_type=code&redirect_uri={REDIRECT_URI}&scope={SCOPE.replace(' ', '+')}"
