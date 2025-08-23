@@ -5,11 +5,11 @@
   <ul class="server-list">
     {% for t in tournaments %}
       <li class="server-card">
-        <a href="{{ url_for('edit_tournament', turnament_id=t.id) }}">{{ t.name }}</a>
+        <a href="{{ url_for('edit_tournament', tournament_id=t.id) }}">{{ t.name }}</a>
       </li>
     {% endfor %}
   </ul>
-<form action="{{ url_for('new_tournament') }}" method="GET">
+<form action="{{ url_for('new_tournament', guild_id=t.guild_id) }}" method="GET">
   <button type="submit">Neues Turnier</button>
 </form>
 {% endblock %}
