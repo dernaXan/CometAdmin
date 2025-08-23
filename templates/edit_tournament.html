@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  {{ super() }}
+  <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css">
+{% endblock %}
+
+{% block content %}
+<h1>Editiere Turnier</h1>
+
+<form method="POST" action="/tournaments/{{ tournament.id }}/edit">
+
+  <!-- TURNIER ID + COPY + DELETE -->
+  <div class="section tournament-header" style="position: relative;">
+    <h3>Turnier-ID</h3>
+    <div class="tournament-id-container">
+      <input type="text" id="tournament_id" value="{{ tournament.id }}" disabled>
+      <button type="button" class="copy-btn" onclick="copyTournamentId()" title="ID kopieren">📋</button>
+    </div>
+    <button type="button" class="delete-btn-desktop" onclick="deleteTournament()" title="Turnier löschen">🗑️</button>
+  </div>
+
+  <!-- Turnier Name -->
+  <div class="section">
+    <label for="tournament_name">Name:</label>
+    <input type="text" id="tournament_name" name="name" value="{{ tournament.name }}">
+  </div>
+
+  <!-- Turnier Status -->
+  <div class="section">
+    <label for="tournament_status">Status:</label>
+    <select id="tournament_status" name="status">
+      <option value="pending" {% if tournament.status == 'pending' %}selected{% endif %}>Pending</option>
+      <option value="running" {% if tournament.status == 'running' %}selected{% endif %}>Running</option>
+      <option value="finished" {% if tournament.status == 'finished' %}selected{% endif %}>Finished</option>
+      <option value="cancelled" {% if tournament.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+    </select>
+  </div>
+
+  <!-- Max Team Size -->
+  <div class="section">
+    <label for="max_team_size">Maximale Teamgröße:</label>
+    <input type="number" id="max_team_size" name="max_team_size" value="{{ tournament.max_team_size or '' }}">
+  </div>
+
+  <!-- TEAMS -->
+  <div class="section">
+    <h3>Teams</h3>
+    <div id="teams-container">
+      {% for team_id, team in tournament.teams.items() %}
+        <div class="team" data-id="{{ team_id }}">
+          <strong>Team: {{ team.name }}</strong><br>
+          <label>Name:</label>
+          <input type="text" name="teams[{{ team_id }}][name]" value="{{ team.name }}">
+          <label>Captain:</label>
+          <input type="text" name="teams[{{ team_id }}][captain]" value="{{ team.captain }}">
+          <label>Mitglieder (Komma getrennt):</label>
+          <input type="text" name="teams[{{ team_id }}][members]" value="{{ team.members | join(', ') }}">
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- BRACKET -->
+  <div class="section">
+    <h3>Bracket</h3>
+    <textarea name="bracket" rows="5" placeholder="Bracket-Struktur JSON">{{ tournament.bracket | tojson }}</textarea>
+  </div>
+
+  <br>
+  <button type="submit">Speichern</button>
+</form>
+
+<!-- DELETE MOBILE BUTTON -->
+<div class="delete-btn-mobile-container">
+  <button type="button" class="delete-btn-mobile" onclick="deleteTournament()">Turnier löschen</button>
+</div>
+
+<script>
+function copyTournamentId() {
+  const input = document.getElementById('tournament_id');
+  navigator.clipboard.writeText(input.value).then(() => {
+    alert("Turnier-ID kopiert!");
+  }).catch(err => console.error("Fehler beim Kopieren: ", err));
+}
+
+function deleteTournament() {
+  if (!confirm("Willst du dieses Turnier wirklich löschen?")) return;
+  window.location.href = "{{ url_for('delete_tournament', tournament_id=tournament.id) }}";
+}
+</script>
+
+{% endblock %}
