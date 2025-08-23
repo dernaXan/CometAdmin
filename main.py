@@ -102,7 +102,7 @@ def tournaments(guild_id):
     if r.status_code != 200:
         return "Fehler beim Abrufen der Daten", 500
     tournaments = r.json()
-    return render_template("tournament.html", tournaments=tournaments)
+    return render_template("tournament.html", tournaments=tournaments, guild_id=guild_id)
 
 @app.route('/guild/<int:guild_id>/tournaments/new', methods=['GET'])
 def new_tournament(guild_id):
