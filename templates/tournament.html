@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Wähle einen Server aus</h1>
+  <h1>Wähle ein Turnier aus</h1>
   <ul class="server-list">
     {% for t in tournaments %}
       <li class="server-card">
@@ -9,7 +9,7 @@
       </li>
     {% endfor %}
   </ul>
-<form action="{{ url_for('new_tournament', guild_id=t.guild_id) }}" method="GET">
+<form action="{{ url_for('new_tournament', guild_id=guild_id) }}" method="GET">
   <button type="submit">Neues Turnier</button>
 </form>
 {% endblock %}
