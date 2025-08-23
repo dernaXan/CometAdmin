@@ -240,6 +240,87 @@ input[type="checkbox"]:hover {
     font-size: 1.2rem;
   }
 }
+
+/* ---------------------------
+   Tournament ID + Clipboard
+   --------------------------- */
+.tournament-id-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tournament-id-container input {
+  flex: 1;
+  padding: 6px 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+}
+
+.tournament-id-container .copy-btn {
+  display: inline-block;
+  padding: 6px 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.tournament-id-container:hover .copy-btn {
+  opacity: 1;
+}
+
+/* ---------------------------
+   DELETE BUTTON
+   --------------------------- */
+.delete-btn-desktop {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.3rem;
+  padding: 5px 8px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: #f33;
+  display: none; /* Desktop only via media query */
+}
+
+.delete-btn-mobile-container {
+  display: none;
+  margin-top: 20px;
+}
+
+.delete-btn-mobile {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  background-color: #f33;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* RESPONSIVE */
+@media (min-width: 768px) {
+  .delete-btn-desktop {
+    display: inline-block;
+  }
+}
+
+@media (max-width: 767px) {
+  .delete-btn-mobile-container {
+    display: block;
+  }
+}
+
 </style>
   {% block head %}
 
