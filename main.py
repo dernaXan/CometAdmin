@@ -76,7 +76,7 @@ def config_guild(guild_id):
     if request.method == "POST":
         form_data = request.form.to_dict()
         form_data['upload-notifications'] = {'yt': form_data.pop('upload_notify_yt', '')}
-        r = requests.patch(
+        r = requests.post(
             f'https://dcbot-cr1m.onrender.com/guild/{guild_id}/data/update',
             headers={"Authorization": f"Bearer {API_TOKEN}", "Content-Type": "application/json"},
             json=form_data
