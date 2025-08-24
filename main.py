@@ -143,7 +143,7 @@ def edit_tournament(tournament_id):
     if request.method == "GET":
         return render_template("edit_tournament.html", tournament=tournament)
     elif request.method == "POST":
-        data = request.get_json()
+        data = request.form.to_dict()
         r = requests.patch(
             f'https://dcbot-cr1m.onrender.com/tournaments/{tournament_id}/update',
             headers={"Authorization": f"Bearer {API_TOKEN}", "Content-Type": "application/json"},
