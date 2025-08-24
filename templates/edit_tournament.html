@@ -76,6 +76,9 @@
 <div class="delete-btn-mobile-container">
   <button type="button" class="delete-btn-mobile" onclick="deleteTournament()">Turnier löschen</button>
 </div>
+<form id="delete-form" action="{{ url_for('delete_tournament', tournament_id=tournament.id) }}" method="POST" style="display: none;">
+</form>
+
 
 <script>
 function copyTournamentId() {
@@ -85,9 +88,11 @@ function copyTournamentId() {
   }).catch(err => console.error("Fehler beim Kopieren: ", err));
 }
 
+
+
 function deleteTournament() {
   if (!confirm("Willst du dieses Turnier wirklich löschen?")) return;
-  window.location.href = "{{ url_for('delete_tournament', tournament_id=tournament.id) }}";
+  document.getElementById("delete-form").submit();
 }
 </script>
 
