@@ -160,12 +160,12 @@ def delete_tournament(tournament_id):
         return redirect(url_for("index"))
 
     # Turnierdaten abrufen, um guild_id zu prüfen
-    r = requests.get(
-        f'https://dcbot-cr1m.onrender.com/tournaments/{tournament_id}/load',
+    r = requests.delete(
+        f'https://dcbot-cr1m.onrender.com/tournaments/{tournament_id}/delete',
         headers={"Authorization": f"Bearer {API_TOKEN}"}
     )
     if r.status_code != 200:
-        return "Fehler beim Abrufen der Turnierdaten", 500
+        return "Fehler beim Löschen der Turnierdaten", 500
     tournament = r.json()
     guild_id = tournament['guild_id']
 
