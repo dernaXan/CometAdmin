@@ -100,7 +100,7 @@ def tournaments(guild_id):
 
     r = requests.get(f'https://dcbot-cr1m.onrender.com/guild/{guild_id}/tournaments')
     if r.status_code != 200:
-        return "Fehler beim Abrufen der Daten", 500
+        return r.text, r.status_code
     tournaments = r.json()
     return render_template("tournament.html", tournaments=tournaments, guild_id=guild_id)
 
@@ -116,7 +116,7 @@ def new_tournament(guild_id):
 
     r = requests.get(f'https://dcbot-cr1m.onrender.com/guild/{guild_id}/tournaments/new')
     if r.status_code != 201:
-        return "Fehler beim Erstellen des Turniers", 500
+        return r.text, r.status_code
 
     tournament = r.json()
     tournament_id = tournament['id']
@@ -150,7 +150,7 @@ def edit_tournament(tournament_id):
             json=data
         )
         if r.status_code != 200:
-            return "Fehler beim Speichern der Turnierdaten", 500
+            return r.text, r.status_code
         return redirect(url_for("index"))
 
 @app.route('/tournaments/<string:tournament_id>/delete', methods=['POST', 'DELETE'])
@@ -165,7 +165,7 @@ def delete_tournament(tournament_id):
         headers={"Authorization": f"Bearer {API_TOKEN}"}
     )
     if r.status_code != 200:
-        return "Fehler beim Löschen der Turnierdaten", 500
+        return r.text, r.status_code
     tournament = r.json()
     guild_id = tournament['guild_id']
 
@@ -180,7 +180,7 @@ def delete_tournament(tournament_id):
         headers={"Authorization": f"Bearer {API_TOKEN}"}
     )
     if r.status_code != 200:
-        return "Fehler beim Löschen des Turniers", 500
+        return r.text, r.status_code
 
     # Weiterleitung nach Löschung
     return redirect(url_for('tournaments', guild_id=guild_id))
