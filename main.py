@@ -154,7 +154,7 @@ def edit_tournament(tournament_id):
         return redirect(url_for("index"))
 
 @app.route('/tournaments/<string:tournament_id>/delete', methods=['POST', 'DELETE'])
-def delete_tournament_route(tournament_id):
+def delete_tournament(tournament_id):
     user = session.get("user", None)
     if not user:
         return redirect(url_for("index"))
